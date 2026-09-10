@@ -1,1 +1,274 @@
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司介绍 | 专业企业服务</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        /* 导航栏 */
+        nav {
+            background-color: #165DFF;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 16px;
+        }
+        .nav-links a:hover {
+            color: #ffdd70;
+        }
+        /* 首屏横幅 */
+        .banner {
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("https://picsum.photos/id/1067/1920/700");
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        .banner h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .banner p {
+            font-size: 20px;
+            max-width: 700px;
+        }
+        .banner-btn {
+            margin-top: 30px;
+            padding:14px 36px;
+            background:#165DFF;
+            color:#fff;
+            border:none;
+            border-radius:6px;
+            font-size:17px;
+            cursor:pointer;
+        }
+        .banner-btn:hover{
+            background:#0e42c2;
+        }
+        /* 通用容器 */
+        .wrap {
+            max-width:1200px;
+            margin:0 auto;
+            padding:60px 20px;
+        }
+        .section-title{
+            text-align:center;
+            font-size:32px;
+            color:#222;
+            margin-bottom:45px;
+        }
+        /* 关于我们 */
+        .about-row{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:40px;
+            align-items:center;
+        }
+        .about-text p{
+            font-size:16px;
+            line-height:1.8;
+            color:#555;
+            margin-bottom:15px;
+        }
+        .about-img{
+            width:100%;
+            border-radius:8px;
+        }
+        /* 业务板块 */
+        .bg-gray{
+            background:#f5f7fa;
+        }
+        .service-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(270px,1fr));
+            gap:25px;
+        }
+        .service-card{
+            background:#fff;
+            padding:30px 24px;
+            border-radius:8px;
+            box-shadow:0 2px 12px rgba(0,0,0,0.07);
+        }
+        .service-card h3{
+            margin-bottom:14px;
+            color:#165DFF;
+        }
+        .service-card p{
+            color:#666;
+            line-height:1.7;
+        }
+        /* 企业优势 */
+        .advantage-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+            gap:24px;
+        }
+        .adv-item{
+            text-align:center;
+            padding:25px 15px;
+        }
+        .adv-item h4{
+            font-size:19px;
+            margin:12px 0;
+        }
+        /* 联系我们 */
+        .contact-box{
+            background:#165DFF;
+            color:white;
+            text-align:center;
+            padding:50px 20px;
+            border-radius:10px;
+        }
+        /* 页脚 */
+        footer{
+            background:#1a1a1a;
+            color:#aaa;
+            text-align:center;
+            padding:30px;
+        }
+        /* 移动端适配 */
+        @media(max-width:768px){
+            .nav-links{
+                display:none;
+            }
+            .banner h1{
+                font-size:32px;
+            }
+            .about-row{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--导航-->
+<nav>
+    <div class="nav-container">
+        <div class="logo">三剑客科技有限公司</div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#about">关于我们</a>
+            <a href="#service">业务服务</a>
+            <a href="#advantage">企业优势</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </div>
+</nav>
+
+<!--首屏-->
+<section class="banner" id="home">
+    <h1>创新赋能 · 携手共赢</h1>
+    <p>专注行业解决方案，为客户提供高品质产品与一站式服务，助力企业高质量发展</p>
+    <button class="banner-btn">了解更多</button>
+</section>
+
+<!--关于我们-->
+<section id="about" class="wrap">
+    <h2 class="section-title">关于我们</h2>
+    <div class="about-row">
+        <div class="about-text">
+            <p>三剑客科技有限公司是一家专注技术服务、项目落地的现代化企业。公司深耕行业多年，拥有专业技术团队，坚持以客户需求为核心。</p>
+            <p>我们秉承诚信、务实、创新的经营理念，致力于为合作伙伴提供稳定高效的全套解决方案。从项目规划、实施落地到后期运维，提供全流程支持。</p>
+            <p>多年来服务众多企业客户，积累大量实战经验，获得行业广泛认可。</p>
+        </div>
+        <div>
+            <img class="about-img" src="https://picsum.photos/id/1048/600/420" alt="公司环境">
+        </div>
+    </div>
+</section>
+
+<!--业务服务-->
+<section id="service" class="bg-gray">
+    <div class="wrap">
+        <h2 class="section-title">业务服务</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <h3>方案定制</h3>
+                <p>针对企业实际情况，定制专属解决方案，贴合业务场景，降本增效。</p>
+            </div>
+            <div class="service-card">
+                <h3>技术开发</h3>
+                <p>软件、系统、网页开发服务，快速交付稳定可用的数字化产品。</p>
+            </div>
+            <div class="service-card">
+                <h3>运维支持</h3>
+                <p>7×12小时技术支持，故障快速响应，保障业务持续稳定运行。</p>
+            </div>
+            <div class="service-card">
+                <h3>咨询顾问</h3>
+                <p>行业专家提供业务咨询，梳理流程，帮助企业完成数字化升级。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--企业优势-->
+<section id="advantage" class="wrap">
+    <h2 class="section-title">我们的优势</h2>
+    <div class="advantage-grid">
+        <div class="adv-item">
+            <h4>专业团队</h4>
+            <p>多年行业实战经验，技术过硬，执行力强</p>
+        </div>
+        <div class="adv-item">
+            <h4>高效交付</h4>
+            <p>标准化流程，严格管控项目进度，按时交付</p>
+        </div>
+        <div class="adv-item">
+            <h4>高性价比</h4>
+            <p>拒绝溢价，提供高性价比服务方案</p>
+        </div>
+        <div class="adv-item">
+            <h4>售后保障</h4>
+            <p>完善售后服务体系，持续跟进客户需求</p>
+        </div>
+    </div>
+</section>
+
+<!--联系我们-->
+<section id="contact" class="wrap">
+    <div class="contact-box">
+        <h2>联系我们</h2>
+        <p style="margin-top:16px;font-size:17px;">董事长：  陈水军  电话：138‑0000‑0000 | 邮箱：contact@company.com</p>
+        <p style="margin-top:16px;font-size:17px;">总经理：  曾卫    电话：138‑0000‑0000 | 邮箱：contact@company.com</p>
+        <p style="margin-top:10px;">地址：广东省东莞市高新科技产业园</p>
+    </div>
+</section>
+
+<!--页脚-->
+<footer>
+    <p>© 2026 三剑客科技有限公司 版权所有</p>
+</footer>
+
+</body>
+</html>
