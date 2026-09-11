@@ -1,0 +1,1756 @@
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>综合后勤考勤薪资管理</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f766e'/%3E%3Cstop offset='100%25' stop-color='%230b5f59'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='64' cy='64' r='56' fill='url(%23g)'/%3E%3Ccircle cx='64' cy='64' r='46' fill='rgba(255,255,255,0.12)'/%3E%3Ctext x='64' y='74' text-anchor='middle' font-size='48' font-family='Microsoft YaHei, Arial, sans-serif' font-weight='700' fill='white'%3E考%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --panel-2: #eef3f6;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #d6dde3;
+      --accent: #0f766e;
+      --accent-2: #0b5f59;
+      --warn: #b45309;
+      --danger: #b91c1c;
+      --ok: #166534;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    .app {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+      background-color: #f3f6f8 !important;
+    }
+    .title-block h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .title-block p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto auto auto;
+      gap: 10px;
+      padding: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+      background-color: #f3f6f8 !important;
+    }
+    .toolbar-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .toolbar-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .toolbar-stack button {
+      width: 100%;
+    }
+    label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    input,
+    select,
+    button,
+    textarea {
+      font: inherit;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    input[type="date"],
+    select,
+    textarea {
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 10px;
+      min-width: 0;
+    }
+    input[type="date"] {
+      width: 100%;
+      max-width: 150px;
+      min-width: 0;
+      padding: 0 8px;
+    }
+    textarea {
+      height: 84px;
+      padding: 10px;
+      resize: vertical;
+    }
+    button {
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    button.primary:hover {
+      background: var(--accent-2);
+    }
+    button.warn {
+      color: var(--warn);
+    }
+    button.danger {
+      color: var(--danger);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 16px;
+    }
+    .sidebar,
+    .content {
+      min-width: 0;
+    }
+    .section {
+      padding: 14px;
+    }
+    .section + .section {
+      border-top: 1px solid var(--line);
+    }
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .section-heading h2 {
+      margin-bottom: 12px;
+    }
+    .collapse-toggle {
+      width: 36px;
+      height: 32px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1;
+    }
+    .collapse-toggle:hover {
+      color: var(--accent-2);
+    }
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .inline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .triple-inline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .triple-inline .field:last-child {
+      justify-self: end;
+      width: min(150px, 100%);
+    }
+    .member-list {
+      display: grid;
+      gap: 8px;
+      max-height: 320px;
+      overflow: auto;
+    }
+    .member-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: var(--panel-2);
+    }
+    .member-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .member-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .personnel-gate {
+      background: #f8fafc;
+    }
+    .personnel-gate p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+    .stat .k {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .stat .v {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .table-wrap {
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      max-width: 100%;
+      max-height: 65vh;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: max-content;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 100%;
+      background: #fff;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      z-index: 1;
+    }
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 1;
+    }
+    thead th:first-child {
+      background: #f8fafc;
+      z-index: 2;
+    }
+    .name-col {
+      width: 180px;
+      min-width: 180px;
+      text-align: left;
+      padding-left: 12px;
+      font-weight: 600;
+    }
+    .day-head {
+      width: 48px;
+      min-width: 48px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+    .summary-head {
+      width: 64px;
+      min-width: 64px;
+    }
+    .reward-penalty-head {
+      width: 128px;
+      min-width: 128px;
+    }
+    .status-select {
+      width: 100%;
+      min-width: 48px;
+      height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 0 6px;
+      font-size: 12px;
+    }
+    .summary-cell {
+      background: #fbfdff;
+      font-weight: 600;
+    }
+    .reward-penalty-input {
+      width: 100%;
+      min-width: 64px;
+      height: 32px;
+      padding: 0 6px;
+      text-align: center;
+    }
+    .footnote {
+      padding: 12px 14px 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e6fffb;
+      color: var(--accent-2);
+      border: 1px solid #b8efe8;
+    }
+    .connection-panel {
+      display: none;
+      margin-bottom: 16px;
+      padding: 16px;
+    }
+    .connection-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .connection-header h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+    .connection-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .connection-controls,
+    .connection-links {
+      display: grid;
+      gap: 10px;
+    }
+    .connection-controls {
+      grid-template-columns: minmax(180px, 1fr) 120px auto;
+      margin-bottom: 12px;
+    }
+    .connection-links {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .connection-link {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel-2);
+    }
+    .connection-link strong {
+      font-size: 13px;
+    }
+    .connection-link a {
+      overflow-wrap: anywhere;
+      color: var(--accent-2);
+      font-size: 12px;
+    }
+    .connection-tip {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .fixed-mobile-link {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #b8efe8;
+      border-radius: 6px;
+      background: #f0fdfa;
+    }
+    .fixed-mobile-link strong {
+      color: var(--accent-2);
+      font-size: 13px;
+    }
+    .fixed-mobile-link code {
+      overflow-wrap: anywhere;
+      color: var(--text);
+      font-size: 13px;
+    }
+    .mobile-mode .desktop-only {
+      display: none;
+    }
+    .mobile-mode .app {
+      max-width: 760px;
+    }
+    .mobile-mode .layout {
+      grid-template-columns: 1fr;
+    }
+    @media (max-width: 760px) {
+      .connection-controls,
+      .connection-links {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 680px) {
+      .app {
+        width: 100%;
+        padding: 10px;
+      }
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .inline,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 12px;
+      }
+      .toolbar-group {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 6px;
+      }
+      .toolbar button {
+        width: 100%;
+      }
+      button,
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      select {
+        min-height: 42px;
+      }
+      .section {
+        padding: 12px;
+      }
+      .stats {
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+      }
+      .stat .k {
+        margin-bottom: 0;
+      }
+      .stat .v {
+        font-size: 20px;
+      }
+      .name-col {
+        width: 132px;
+        min-width: 132px;
+      }
+      .day-head {
+        width: 44px;
+        min-width: 44px;
+      }
+      .summary-head {
+        width: 56px;
+        min-width: 56px;
+      }
+      .reward-penalty-head {
+        width: 112px;
+        min-width: 112px;
+      }
+      th,
+      td {
+        padding: 6px 4px;
+      }
+      .table-wrap {
+        max-height: 60vh;
+      }
+      .status-select {
+        min-width: 40px;
+        height: 38px;
+        padding: 0 3px;
+        font-size: 11px;
+      }
+      .title-block h1 {
+        font-size: 22px;
+      }
+    }
+    @media (max-width: 480px) {
+      .title-block h1 {
+        font-size: 20px;
+      }
+      .title-block p {
+        font-size: 12px;
+      }
+      .toolbar-group {
+        grid-template-columns: 1fr 1fr;
+      }
+      .toolbar-group label {
+        display: none;
+      }
+      .connection-header {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .connection-header button {
+        width: 100%;
+      }
+      .member-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding: 8px;
+      }
+    }
+    @media (max-width: 360px) {
+      .app {
+        padding: 8px;
+      }
+      .name-col {
+        width: 116px;
+        min-width: 116px;
+      }
+      .day-head {
+        width: 40px;
+        min-width: 40px;
+      }
+      .summary-head {
+        width: 50px;
+        min-width: 50px;
+      }
+      .status-select {
+        min-width: 36px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="title-block">
+        <h1 style="color:#050415;">综合后勤考勤薪资管理</h1>
+        <p style="color:#c53349;">适用于本地月度考勤登记、多人管理与按年月查看</p>
+      </div>
+      <div>
+        <span class="badge" id="storageStatus">本地存储已启用</span>
+        <span class="badge" id="syncStatus">同步功能未启用</span>
+      </div>
+    </div>
+    <div class="panel toolbar">
+      <div class="toolbar-group">
+        <label for="yearSelect">年份</label>
+        <select id="yearSelect"></select>
+        <label for="monthSelect">月份</label>
+        <select id="monthSelect"></select>
+      </div>
+      <button id="prevMonthBtn">上个月</button>
+      <button id="nextMonthBtn">下个月</button>
+      <button id="exportBtn">导出 Excel</button>
+      <button id="importBtn">导入 Excel</button>
+      <div class="toolbar-stack">
+        <button id="markAllPresentBtn" class="primary">一键考勤</button>
+        <button id="clearMonthBtn" class="danger">清空当月</button>
+      </div>
+      <input id="fileInput" type="file" accept=".xls,.html,.json" hidden />
+    </div>
+    <div class="panel connection-panel desktop-only">
+      <div class="connection-header">
+        <div>
+          <h2>电脑多端口连接 / 手机连接网页</h2>
+          <p>电脑与手机连接同一 Wi-Fi 后，使用下面任一地址打开本页面</p>
+        </div>
+        <button id="refreshLinksBtn">刷新链接</button>
+      </div>
+      <div class="connection-controls">
+        <div class="field">
+          <label for="hostInput">电脑局域网地址</label>
+          <input id="hostInput" type="text" placeholder="例如：192.168.1.100" />
+        </div>
+        <div class="field">
+          <label for="portInput">端口</label>
+          <input id="portInput" type="number" value="8765" readonly />
+        </div>
+        <button id="mobileLinkBtn" class="primary">打开手机连接页</button>
+      </div>
+      <div class="fixed-mobile-link">
+        <strong>当前网页地址（适用于内网和外网穿透）</strong>
+        <code id="fixedMobileUrl">正在生成...</code>
+        <button id="copyFixedMobileBtn" type="button">复制手机网址</button>
+      </div>
+      <div id="connectionLinks" class="connection-links"></div>
+      <p class="connection-tip">内网使用电脑局域网地址；外网使用穿透工具提供的完整网址。请将穿透工具转发到本机 8765 端口，并复制当前网页地址。</p>
+    </div>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="section personnel-gate" id="personnelGate">
+            <h2>人员列表已锁定</h2>
+            <p id="personnelGateHint">首次进入请设置人员列表密码</p>
+            <div class="field">
+              <label for="personnelPassword">访问密码</label>
+              <input id="personnelPassword" type="password" placeholder="请输入至少 4 位密码" autocomplete="current-password" />
+            </div>
+            <button id="unlockPersonnelBtn" class="primary">进入人员列表</button>
+          </div>
+          <div id="protectedMemberContent" hidden>
+          <div class="section">
+            <h2>人员管理</h2>
+            <div class="field">
+              <label for="memberName">姓名</label>
+              <input id="memberName" type="text" placeholder="请输入姓名" />
+            </div>
+            <div class="inline">
+              <div class="field">
+                <label for="memberDept">部门</label>
+                <input id="memberDept" type="text" placeholder="例如：行政部" />
+              </div>
+              <div class="field">
+                <label for="memberNo">工号</label>
+                <input id="memberNo" type="text" placeholder="自动生成" readonly />
+              </div>
+            </div>
+            <div class="triple-inline">
+              <div class="field">
+                <label for="memberPosition">职位</label>
+                <input id="memberPosition" type="text" placeholder="例如：主管" />
+              </div>
+              <div class="field">
+                <label for="memberSalary">薪资</label>
+                <input id="memberSalary" type="text" placeholder="例如：8000" />
+              </div>
+              <div class="field">
+                <label for="memberJoinDate">入职日期</label>
+                <input id="memberJoinDate" type="date" />
+              </div>
+            </div>
+            <div class="inline">
+              <div class="field">
+                <label for="memberBankName">银行名</label>
+                <input id="memberBankName" type="text" placeholder="例如：中国银行" />
+              </div>
+              <div class="field">
+                <label for="memberBankAccount">账号</label>
+                <input id="memberBankAccount" type="text" placeholder="请输入银行账号" />
+              </div>
+            </div>
+            <button id="addMemberBtn" class="primary">新增人员</button>
+          </div>
+          <div class="section">
+            <div class="field">
+              <label for="employeeSearch">按工号搜索</label>
+              <input id="employeeSearch" type="text" placeholder="请输入工号，例如 A001" autocomplete="off" />
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-heading">
+              <h2>人员列表</h2>
+              <button class="collapse-toggle" id="toggleMemberListBtn" type="button" aria-label="收起人员列表" aria-controls="memberList" aria-expanded="true">⌃</button>
+            </div>
+            <div id="memberList" class="member-list"></div>
+          </div>
+          <div class="section">
+            <div class="section-heading">
+              <h2>已归档列表</h2>
+              <button class="collapse-toggle" id="toggleArchivedMemberListBtn" type="button" aria-label="收起已归档列表" aria-controls="archivedMemberList" aria-expanded="true">⌃</button>
+            </div>
+            <div id="archivedMemberList" class="member-list"></div>
+          </div>
+          </div>
+          <div class="section">
+            <h2>状态说明</h2>
+            <div class="field">
+              <label>默认考勤状态</label>
+              <select id="defaultStatus">
+                <option value="" selected>-</option>
+                <option value="出勤">出勤</option>
+                <option value="请假">请假</option>
+                <option value="旷工">旷工</option>
+                <option value="病假">病假</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="monthRemark">当月备注</label>
+              <textarea id="monthRemark" placeholder="记录本月考勤说明、制度备注、特殊安排"></textarea>
+            </div>
+            <button id="saveRemarkBtn">保存备注</button>
+          </div>
+        </div>
+      </aside>
+      <main class="content">
+        <div class="stats">
+          <div class="stat">
+            <div class="k">当前月份</div>
+            <div class="v" id="statMonth">-</div>
+          </div>
+          <div class="stat">
+            <div class="k">人员数量</div>
+            <div class="v" id="statMembers">0</div>
+          </div>
+          <div class="stat">
+            <div class="k">出勤记录数</div>
+            <div class="v" id="statAttendance">0</div>
+          </div>
+          <div class="stat">
+            <div class="k">异常记录数</div>
+            <div class="v" id="statAbnormal">0</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="section">
+            <h2 id="tableTitle">月度考勤表</h2>
+          </div>
+          <div class="table-wrap">
+            <table id="attendanceTable"></table>
+          </div>
+          <div class="footnote" id="tableFootnote"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    const STORAGE_KEY = "enterprise_attendance_data_v1";
+    const PERSONNEL_ACCESS_KEY = "enterprise_personnel_access_hash_v1";
+    const STATUS_OPTIONS = ["出勤", "请假", "旷工", "病假"];
+    const ABNORMAL_SET = new Set(["请假", "旷工", "病假"]);
+    const state = {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      data: {
+        members: [],
+        attendance: {},
+        remarks: {}
+      },
+      activeEditMember: null, // 记录当前编辑的人员 {id, employeeNo, name}
+      editMemberId: null // 记录当前正在编辑的人员 id
+    };
+    const els = {
+      yearSelect: document.getElementById("yearSelect"),
+      monthSelect: document.getElementById("monthSelect"),
+      prevMonthBtn: document.getElementById("prevMonthBtn"),
+      nextMonthBtn: document.getElementById("nextMonthBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      importBtn: document.getElementById("importBtn"),
+      markAllPresentBtn: document.getElementById("markAllPresentBtn"),
+      clearMonthBtn: document.getElementById("clearMonthBtn"),
+      fileInput: document.getElementById("fileInput"),
+      memberName: document.getElementById("memberName"),
+      memberDept: document.getElementById("memberDept"),
+      memberNo: document.getElementById("memberNo"),
+      memberPosition: document.getElementById("memberPosition"),
+      memberSalary: document.getElementById("memberSalary"),
+      memberJoinDate: document.getElementById("memberJoinDate"),
+      memberBankName: document.getElementById("memberBankName"),
+      memberBankAccount: document.getElementById("memberBankAccount"),
+      personnelGate: document.getElementById("personnelGate"),
+      personnelPassword: document.getElementById("personnelPassword"),
+      unlockPersonnelBtn: document.getElementById("unlockPersonnelBtn"),
+      personnelGateHint: document.getElementById("personnelGateHint"),
+      protectedMemberContent: document.getElementById("protectedMemberContent"),
+      addMemberBtn: document.getElementById("addMemberBtn"),
+      employeeSearch: document.getElementById("employeeSearch"),
+      memberList: document.getElementById("memberList"),
+      archivedMemberList: document.getElementById("archivedMemberList"),
+      toggleMemberListBtn: document.getElementById("toggleMemberListBtn"),
+      toggleArchivedMemberListBtn: document.getElementById("toggleArchivedMemberListBtn"),
+      defaultStatus: document.getElementById("defaultStatus"),
+      monthRemark: document.getElementById("monthRemark"),
+      saveRemarkBtn: document.getElementById("saveRemarkBtn"),
+      attendanceTable: document.getElementById("attendanceTable"),
+      tableTitle: document.getElementById("tableTitle"),
+      tableFootnote: document.getElementById("tableFootnote"),
+      statMonth: document.getElementById("statMonth"),
+      statMembers: document.getElementById("statMembers"),
+      statAttendance: document.getElementById("statAttendance"),
+      statAbnormal: document.getElementById("statAbnormal"),
+      syncStatus: document.getElementById("syncStatus"),
+      hostInput: document.getElementById("hostInput"),
+      portInput: document.getElementById("portInput"),
+      connectionLinks: document.getElementById("connectionLinks"),
+      refreshLinksBtn: document.getElementById("refreshLinksBtn"),
+      mobileLinkBtn: document.getElementById("mobileLinkBtn"),
+      fixedMobileUrl: document.getElementById("fixedMobileUrl"),
+      copyFixedMobileBtn: document.getElementById("copyFixedMobileBtn")
+    };
+    function getPagePath() {
+      if (location.protocol === "file:") return "/attendance.html";
+      return location.pathname.endsWith("/attendance.html") ? location.pathname : "/attendance.html";
+    }
+    function getConnectionHost() {
+      return els.hostInput.value.trim() || location.hostname || "localhost";
+    }
+    function getConnectionPort() {
+      const port = Number(els.portInput.value);
+      return port >= 1 && port <= 65535 ? port : 5500;
+    }
+    function getFixedMobileUrl() {
+      const protocol = location.protocol === "https:" ? "https:" : "http:";
+      const host = getConnectionHost();
+      if ((location.protocol === "http:" || location.protocol === "https:") &&
+          host === location.hostname && (location.port === "8765" || location.port === "")) {
+        return location.origin + getPagePath() + "?mobile=1";
+      }
+      return protocol + "//" + host + ":8765/attendance.html?mobile=1";
+    }
+    function getConnectionUrl(port, mobile) {
+      const protocol = location.protocol === "https:" ? "https:" : "http:";
+      const query = mobile ? "?mobile=1" : "";
+      const sameOriginPort = location.port || (location.protocol === "https:" ? "443" : "80");
+      if ((location.protocol === "http:" || location.protocol === "https:") &&
+          getConnectionHost() === location.hostname && (location.port === "" || String(port) === sameOriginPort)) {
+        return location.origin + getPagePath() + query;
+      }
+      return protocol + "//" + getConnectionHost() + ":" + port + getPagePath() + query;
+    }
+    function renderConnectionLinks() {
+      const selectedPort = getConnectionPort();
+      els.portInput.value = String(selectedPort);
+      els.fixedMobileUrl.textContent = getFixedMobileUrl();
+      const ports = [8765];
+      els.connectionLinks.innerHTML = ports.map(port => {
+        const url = getConnectionUrl(port, true);
+        return "<div class='connection-link'><strong>端口 " + port + " · 手机连接页</strong>" +
+          "<a href='" + escapeHtml(url) + "' target='_blank' rel='noopener'>" + escapeHtml(url) + "</a>" +
+          "<button type='button' data-copy-url='" + escapeHtml(url) + "'>复制链接</button></div>";
+      }).join("");
+      els.connectionLinks.querySelectorAll("[data-copy-url]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const url = button.getAttribute("data-copy-url");
+          try {
+            await navigator.clipboard.writeText(url);
+            button.textContent = "已复制";
+          } catch (err) {
+            window.prompt("请复制手机连接地址", url);
+          }
+        });
+      });
+    }
+    function initConnectionPanel() {
+      if (!els.hostInput) return;
+      const currentHost = location.hostname || "localhost";
+      els.hostInput.value = /^(127\.|0\.0\.0\.0$|localhost$|::1$)/i.test(currentHost) ? "" : currentHost;
+      els.portInput.value = location.port || "5500";
+      renderConnectionLinks();
+      if (!els.hostInput.value && isSyncAvailable()) {
+        fetch("/api/hosts", { cache: "no-store" })
+          .then(response => response.ok ? response.json() : Promise.reject(new Error("host lookup failed")))
+          .then(result => {
+            const hosts = Array.isArray(result.hosts) ? result.hosts : [];
+            if (hosts.length) {
+              els.hostInput.value = hosts[0];
+              renderConnectionLinks();
+            }
+          })
+          .catch(() => {});
+      }
+    }
+    async function copyFixedMobileUrl() {
+      const url = els.fixedMobileUrl.textContent;
+      try {
+        await navigator.clipboard.writeText(url);
+        els.copyFixedMobileBtn.textContent = "已复制固定网址";
+      } catch (err) {
+        window.prompt("请复制固定手机网址", url);
+      }
+    }
+    function enableMobileMode() {
+      if (new URLSearchParams(location.search).get("mobile") === "1") {
+        document.body.classList.add("mobile-mode");
+      }
+    }
+    function padMonth(month) {
+      return String(month).padStart(2, "0");
+    }
+    function getMonthKey(year, month) {
+      return year + "-" + padMonth(month);
+    }
+    function daysInMonth(year, month) {
+      return new Date(year, month, 0).getDate();
+    }
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          state.data.members = Array.isArray(parsed.members) ? parsed.members : [];
+          state.data.attendance = parsed.attendance && typeof parsed.attendance === "object" ? parsed.attendance : {};
+          state.data.remarks = parsed.remarks && typeof parsed.remarks === "object" ? parsed.remarks : {};
+        }
+      } catch (err) {
+        console.error("读取本地数据失败", err);
+      }
+    }
+    let syncTimer = null;
+    let syncVersion = 0;
+    let syncBusy = false;
+    let syncConnected = false;
+    function isSyncAvailable() {
+      return location.protocol === "file:" || location.protocol === "http:" || location.protocol === "https:";
+    }
+    function setSyncStatus(text) {
+      if (els.syncStatus) els.syncStatus.textContent = text;
+    }
+    function getSyncApiUrl() {
+      if (location.protocol === "file:") {
+        return "http://127.0.0.1:8765/api/state";
+      }
+      if (location.port === "5500") {
+        return location.protocol + "//" + location.hostname + ":8765/api/state";
+      }
+      return "/api/state";
+    }
+    async function uploadData() {
+      if (!isSyncAvailable() || syncBusy) return;
+      syncBusy = true;
+      try {
+        const response = await fetch(getSyncApiUrl(), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            data: state.data,
+            current_emp_id: state.activeEditMember?.employeeNo || "",
+            current_emp_name: state.activeEditMember?.name || ""
+          })
+        });
+        if (!response.ok) throw new Error("sync upload failed");
+        const result = await response.json();
+        syncVersion = Math.max(syncVersion, Number(result.version) || 0);
+        syncConnected = true;
+        setSyncStatus("同步已连接");
+        // 上传完毕清空编辑标记
+        state.activeEditMember = null;
+      } catch (err) {
+        syncConnected = false;
+        setSyncStatus("本地模式（同步服务未运行）");
+      } finally {
+        syncBusy = false;
+      }
+    }
+    async function downloadData() {
+      if (!isSyncAvailable() || syncBusy) return;
+      try {
+        const response = await fetch(getSyncApiUrl(), { cache: "no-store" });
+        if (!response.ok) throw new Error("sync download failed");
+        const result = await response.json();
+        const remoteVersion = Number(result.version) || 0;
+        if (result.data && remoteVersion > syncVersion) {
+          state.data.members = Array.isArray(result.data.members) ? result.data.members : [];
+          state.data.attendance = result.data.attendance && typeof result.data.attendance === "object" ? result.data.attendance : {};
+          state.data.remarks = result.data.remarks && typeof result.data.remarks === "object" ? result.data.remarks : {};
+          syncVersion = remoteVersion;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+          renderAll();
+        }
+        syncConnected = true;
+        setSyncStatus("同步已连接");
+      } catch (err) {
+        syncConnected = false;
+        setSyncStatus("本地模式（同步服务未运行）");
+      }
+    }
+    function startSync() {
+      if (!isSyncAvailable()) {
+        setSyncStatus("本地模式（双击打开）");
+        return;
+      }
+      downloadData().then(() => {
+        if (syncVersion === 0) uploadData();
+      });
+      syncTimer = window.setInterval(downloadData, 5000);
+    }
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+      uploadData();
+    }
+    function initSelectors() {
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+        const option = document.createElement("option");
+        option.value = y;
+        option.textContent = y + "年";
+        if (y === state.year) option.selected = true;
+        els.yearSelect.appendChild(option);
+      }
+      for (let m = 1; m <= 12; m++) {
+        const option = document.createElement("option");
+        option.value = m;
+        option.textContent = m + "月";
+        if (m === state.month) option.selected = true;
+        els.monthSelect.appendChild(option);
+      }
+    }
+    function ensureMonthAttendance() {
+      const key = getMonthKey(state.year, state.month);
+      if (!state.data.attendance[key]) {
+        state.data.attendance[key] = {};
+      }
+      return state.data.attendance[key];
+    }
+    async function hashPassword(password) {
+      let hash = 2166136261;
+      for (let index = 0; index < password.length; index++) {
+        hash ^= password.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return (hash >>> 0).toString(16).padStart(8, "0") +
+        (Math.imul(hash ^ 0x9e3779b9, 2246822519) >>> 0).toString(16).padStart(8, "0") +
+        (Math.imul(hash ^ 0x85ebca6b, 3266489917) >>> 0).toString(16).padStart(8, "0") +
+        (Math.imul(hash ^ 0xc2b2ae35, 668265263) >>> 0).toString(16).padStart(8, "0");
+    }
+    async function unlockPersonnel() {
+      const password = els.personnelPassword.value;
+      if (password.length < 4) {
+        alert("人员列表密码至少需要 4 位");
+        return;
+      }
+      const passwordHash = await hashPassword(password);
+      const savedHash = localStorage.getItem(PERSONNEL_ACCESS_KEY);
+      if (savedHash && savedHash !== passwordHash) {
+        alert("密码错误，无法进入人员列表");
+        els.personnelPassword.select();
+        return;
+      }
+      if (!savedHash) {
+        localStorage.setItem(PERSONNEL_ACCESS_KEY, passwordHash);
+      }
+      els.personnelPassword.value = "";
+      els.protectedMemberContent.hidden = false;
+      els.personnelGate.hidden = true;
+    }
+    function initPersonnelGate() {
+      els.personnelGateHint.textContent = localStorage.getItem(PERSONNEL_ACCESS_KEY)
+        ? "请输入人员列表密码后继续"
+        : "首次进入请设置人员列表密码";
+      els.protectedMemberContent.hidden = true;
+      els.personnelGate.hidden = false;
+    }
+    function resetMemberForm() {
+      state.editMemberId = null;
+      els.memberName.value = "";
+      els.memberDept.value = "";
+      els.memberNo.value = "";
+      els.memberPosition.value = "";
+      els.memberSalary.value = "";
+      els.memberJoinDate.value = new Date().toISOString().slice(0, 10);
+      els.memberBankName.value = "";
+      els.memberBankAccount.value = "";
+      els.addMemberBtn.textContent = "新增人员";
+    }
+    function beginEditMember(id) {
+      const member = state.data.members.find(item => item.id === id);
+      if (!member) return;
+      state.editMemberId = id;
+      els.memberName.value = member.name || "";
+      els.memberDept.value = member.dept || "";
+      els.memberNo.value = member.employeeNo || "";
+      els.memberPosition.value = member.position || "";
+      els.memberSalary.value = member.salary || "";
+      els.memberJoinDate.value = member.joinDate || new Date().toISOString().slice(0, 10);
+      els.memberBankName.value = member.bankName || "";
+      els.memberBankAccount.value = member.bankAccount || "";
+      els.addMemberBtn.textContent = "保存修改";
+      els.memberName.focus();
+    }
+    function addMember() {
+      const name = els.memberName.value.trim();
+      const dept = els.memberDept.value.trim();
+      const position = els.memberPosition.value.trim();
+      const salary = els.memberSalary.value.trim();
+      const joinDate = els.memberJoinDate.value;
+      const bankName = els.memberBankName.value.trim();
+      const bankAccount = els.memberBankAccount.value.trim();
+      if (!name) {
+        alert("请输入姓名");
+        return;
+      }
+      if (state.editMemberId) {
+        const member = state.data.members.find(item => item.id === state.editMemberId);
+        if (!member) {
+          resetMemberForm();
+          return;
+        }
+        member.name = name;
+        member.dept = dept;
+        member.position = position;
+        member.salary = salary;
+        member.joinDate = joinDate;
+        member.bankName = bankName;
+        member.bankAccount = bankAccount;
+        resetMemberForm();
+        saveData();
+        renderAll();
+        return;
+      }
+      const employeeNo = getNextEmployeeNo();
+      const exists = state.data.members.some(item => item.name === name && item.employeeNo === employeeNo);
+      if (exists) {
+        alert("该人员已存在");
+        return;
+      }
+      state.data.members.push({
+        id: "m_" + Date.now(),
+        name,
+        dept,
+        employeeNo,
+        position,
+        salary,
+        joinDate,
+        bankName,
+        bankAccount
+      });
+      resetMemberForm();
+      saveData();
+      renderAll();
+    }
+    function getNextEmployeeNo() {
+      let maxNumber = 0;
+      let maxWidth = 3;
+      let prefix = "A";
+      state.data.members.forEach(member => {
+        const match = String(member.employeeNo || "").trim().match(/^(.*?)(\d+)$/);
+        if (!match) return;
+        const number = Number(match[2]);
+        if (number > maxNumber) {
+          maxNumber = number;
+          maxWidth = Math.max(3, match[2].length);
+          prefix = match[1];
+        }
+      });
+      return prefix + String(maxNumber + 1).padStart(maxWidth, "0");
+    }
+    function removeMember(id) {
+      const member = state.data.members.find(item => item.id === id);
+      if (!member) return;
+      const ok = confirm("确认归档人员：" + member.name + "？历史考勤记录会保留并可继续查询。");
+      if (!ok) return;
+      member.archived = true;
+      saveData();
+      renderAll();
+    }
+    function restoreMember(id) {
+      const member = state.data.members.find(item => item.id === id);
+      if (!member) return;
+      member.archived = false;
+      saveData();
+      renderAll();
+    }
+    function renderMemberList() {
+      els.memberList.innerHTML = "";
+      els.archivedMemberList.innerHTML = "";
+      const searchText = els.employeeSearch.value.trim().toLowerCase();
+      const matchesSearch = member => !searchText || String(member.employeeNo || "").toLowerCase().includes(searchText);
+      const activeMembers = state.data.members.filter(member => !member.archived && matchesSearch(member));
+      const archivedMembers = state.data.members.filter(member => member.archived && matchesSearch(member));
+      if (activeMembers.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "member-item";
+        empty.innerHTML = "<div><div class='member-name'>暂无人员</div><div class='member-meta'>请先新增考勤人员</div></div>";
+        els.memberList.appendChild(empty);
+      }
+      if (archivedMembers.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "member-item";
+        empty.innerHTML = "<div><div class='member-name'>暂无归档人员</div><div class='member-meta'>归档人员的历史考勤记录会保留</div></div>";
+        els.archivedMemberList.appendChild(empty);
+      }
+      state.data.members.filter(matchesSearch).forEach(member => {
+        const item = document.createElement("div");
+        item.className = "member-item";
+        const left = document.createElement("div");
+        const metaParts = [
+          member.dept || "未设部门",
+          member.position || "未设职位",
+          member.employeeNo || "未设工号",
+          member.salary ? ("薪资：" + member.salary) : "未填薪资",
+          member.joinDate ? ("入职：" + member.joinDate) : "未填入职日期",
+          member.bankName ? ("银行：" + member.bankName) : "未填银行",
+          member.bankAccount ? ("账号：" + member.bankAccount) : "未填账号",
+          member.archived ? "已归档，历史记录保留" : "在职"
+        ];
+        const meta = metaParts.join(" / ");
+        left.innerHTML = "<div class='member-name'>" + escapeHtml(member.name) + "</div><div class='member-meta'>" + escapeHtml(meta) + "</div>";
+        const actions = document.createElement("div");
+        actions.style.display = "flex";
+        actions.style.gap = "8px";
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.textContent = "编辑";
+        editBtn.style.backgroundColor = "#409eff"; // 蓝色底色
+        editBtn.style.color = "#ffffff";           // 文字白色
+        editBtn.style.border = "1px solid #409eff";
+        editBtn.style.borderRadius = "6px";
+        editBtn.style.padding = "5px 16px";
+        editBtn.style.fontSize = "12px";
+        editBtn.addEventListener("click", () => beginEditMember(member.id));
+        const btn = document.createElement("button");
+        btn.style.borderRadius = "6px";
+        btn.style.padding = "5px 16px";
+        btn.style.fontSize = "12px";
+        if (member.archived) {
+          btn.textContent = "恢复";
+          btn.style.backgroundColor = "#e6a23c"; // 恢复按钮：橙色底色
+          btn.style.color = "#ffffff";
+          btn.style.border = "1px solid #e6a23c";
+          btn.addEventListener("click", () => restoreMember(member.id));
+        } else {
+          btn.className = "danger";
+          btn.textContent = "归档";
+          btn.style.backgroundColor = "#f53f3f";
+          btn.style.color = "#ffffff";
+          btn.addEventListener("click", () => removeMember(member.id));
+        }
+        actions.appendChild(editBtn);
+        actions.appendChild(btn);
+        item.appendChild(left);
+        item.appendChild(actions);
+        (member.archived ? els.archivedMemberList : els.memberList).appendChild(item);
+      });
+    }
+    function setAttendance(memberId, day, value, shouldRenderTable = true) {
+      const monthData = ensureMonthAttendance();
+      if (!monthData[memberId]) {
+        monthData[memberId] = {};
+      }
+      monthData[memberId][day] = value;
+      saveData();
+      if (shouldRenderTable) {
+        renderAll();
+      } else {
+        renderStats();
+      }
+    }
+    function getAttendance(memberId, day) {
+      const key = getMonthKey(state.year, state.month);
+      return state.data.attendance[key] &&
+        state.data.attendance[key][memberId] &&
+        state.data.attendance[key][memberId][day]
+        ? state.data.attendance[key][memberId][day]
+        : "";
+    }
+    function getRewardPenalty(memberId) {
+      const monthData = ensureMonthAttendance();
+      const memberData = monthData[memberId];
+      return memberData && memberData.rewardPenalty !== undefined
+        ? memberData.rewardPenalty
+        : "";
+    }
+    function setRewardPenalty(memberId, value) {
+      const monthData = ensureMonthAttendance();
+      if (!monthData[memberId]) {
+        monthData[memberId] = {};
+      }
+      monthData[memberId].rewardPenalty = value;
+      saveData();
+      renderTable();
+    }
+    function buildRewardPenaltyInput(memberId) {
+      const input = document.createElement("input");
+      input.className = "reward-penalty-input";
+      input.type = "number";
+      input.value = getRewardPenalty(memberId) !== "" ? String(getRewardPenalty(memberId)) : "";
+      input.addEventListener("change", () => {
+        const value = input.value.trim();
+        // 记录当前编辑人员，用于同步标记
+        const member = state.data.members.find(m => m.id === memberId);
+        state.activeEditMember = member ? { id: member.id, employeeNo: member.employeeNo, name: member.name } : null;
+        setRewardPenalty(memberId, value === "" ? "" : Number(value));
+      });
+      return input;
+    }
+    function buildStatusSelect(memberId, day) {
+      const select = document.createElement("select");
+      select.className = "status-select";
+      const empty = document.createElement("option");
+      empty.value = "";
+      empty.textContent = "-";
+      select.appendChild(empty);
+      STATUS_OPTIONS.forEach(status => {
+        const option = document.createElement("option");
+        option.value = status;
+        option.textContent = status;
+        select.appendChild(option);
+      });
+      select.value = getAttendance(memberId, day) || els.defaultStatus.value;
+      if (!getAttendance(memberId, day) && els.defaultStatus.value) {
+        setAttendance(memberId, day, els.defaultStatus.value, false);
+      }
+      select.addEventListener("change", () => {
+        // 记录当前编辑人员，用于同步标记
+        const member = state.data.members.find(m => m.id === memberId);
+        state.activeEditMember = member ? { id: member.id, employeeNo: member.employeeNo, name: member.name } : null;
+        setAttendance(memberId, day, select.value);
+      });
+      return select;
+    }
+    function countMemberSummary(memberId) {
+      const totalDays = daysInMonth(state.year, state.month);
+      let present = 0;
+      let abnormal = 0;
+      const member = state.data.members.find(item => item.id === memberId);
+      const salaryValue = Number(String(member && member.salary ? member.salary : "0").replace(/[^\d.]/g, ""));
+      const rewardPenaltyValue = Number(getRewardPenalty(memberId));
+      for (let day = 1; day <= totalDays; day++) {
+        const status = getAttendance(memberId, day);
+        if (status === "出勤") {
+          present++;
+        }
+        if (ABNORMAL_SET.has(status)) {
+          abnormal++;
+        }
+      }
+      const baseSalary = Number.isFinite(salaryValue) && salaryValue > 0 && totalDays > 0
+        ? (salaryValue / totalDays) * present
+        : 0;
+      const monthlySalary = Number((baseSalary + (Number.isFinite(rewardPenaltyValue) ? rewardPenaltyValue : 0)).toFixed(2));
+      return { present, abnormal, rewardPenalty: Number.isFinite(rewardPenaltyValue) ? rewardPenaltyValue : 0, monthlySalary };
+    }
+    function renderTable() {
+      const totalDays = daysInMonth(state.year, state.month);
+      const table = els.attendanceTable;
+      table.innerHTML = "";
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      const nameHead = document.createElement("th");
+      nameHead.className = "name-col";
+      nameHead.textContent = "人员";
+      headRow.appendChild(nameHead);
+      for (let day = 1; day <= totalDays; day++) {
+        const th = document.createElement("th");
+        th.className = "day-head";
+        th.textContent = day;
+        headRow.appendChild(th);
+      }
+      const presentHead = document.createElement("th");
+      presentHead.className = "summary-head";
+      presentHead.textContent = "出勤";
+      headRow.appendChild(presentHead);
+      const abnormalHead = document.createElement("th");
+      abnormalHead.className = "summary-head";
+      abnormalHead.textContent = "异常";
+      headRow.appendChild(abnormalHead);
+      const rewardPenaltyHead = document.createElement("th");
+      rewardPenaltyHead.className = "summary-head reward-penalty-head";
+      rewardPenaltyHead.textContent = "奖惩";
+      headRow.appendChild(rewardPenaltyHead);
+      const monthlySalaryHead = document.createElement("th");
+      monthlySalaryHead.className = "summary-head";
+      monthlySalaryHead.textContent = "当月薪资";
+      headRow.appendChild(monthlySalaryHead);
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+      const tbody = document.createElement("tbody");
+      const searchText = els.employeeSearch.value.trim().toLowerCase();
+      state.data.members.filter(member => !member.archived && (!searchText || String(member.employeeNo || "").toLowerCase().includes(searchText))).forEach(member => {
+        const tr = document.createElement("tr");
+        const nameTd = document.createElement("td");
+        nameTd.className = "name-col";
+        nameTd.innerHTML =
+          "<div>" + escapeHtml(member.name) + "</div>" +
+          "<div style='font-size:12px;color:#6b7280;margin-top:4px;'>" +
+          escapeHtml(member.employeeNo || "未设工号") +
+          "</div>" +
+          "<div style='font-size:12px;color:#6b7280;margin-top:4px;'>" +
+          escapeHtml(member.position || "未设职位") +
+          "</div>";
+        tr.appendChild(nameTd);
+        for (let day = 1; day <= totalDays; day++) {
+          const td = document.createElement("td");
+          td.appendChild(buildStatusSelect(member.id, day));
+          tr.appendChild(td);
+        }
+        const summary = countMemberSummary(member.id);
+        const presentTd = document.createElement("td");
+        presentTd.className = "summary-cell";
+        presentTd.textContent = summary.present;
+        tr.appendChild(presentTd);
+        const abnormalTd = document.createElement("td");
+        abnormalTd.className = "summary-cell";
+        abnormalTd.textContent = summary.abnormal;
+        tr.appendChild(abnormalTd);
+        const rewardPenaltyTd = document.createElement("td");
+        rewardPenaltyTd.className = "summary-cell";
+        rewardPenaltyTd.appendChild(buildRewardPenaltyInput(member.id));
+        tr.appendChild(rewardPenaltyTd);
+        const monthlySalaryTd = document.createElement("td");
+        monthlySalaryTd.className = "summary-cell";
+        monthlySalaryTd.textContent = summary.monthlySalary.toFixed(2);
+        tr.appendChild(monthlySalaryTd);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      els.tableTitle.textContent = state.year + "年" + state.month + "月考勤表";
+      els.tableFootnote.textContent =
+        "支持本地保存。考勤状态可选出勤、请假、旷工或病假；切换月份后独立记录。";
+    }
+    function renderStats() {
+      const key = getMonthKey(state.year, state.month);
+      const totalDays = daysInMonth(state.year, state.month);
+      let attendanceCount = 0;
+      let abnormalCount = 0;
+      state.data.members.filter(member => !member.archived).forEach(member => {
+        for (let day = 1; day <= totalDays; day++) {
+          const status = getAttendance(member.id, day);
+          if (status === "出勤") {
+            attendanceCount++;
+          }
+          if (ABNORMAL_SET.has(status)) {
+            abnormalCount++;
+          }
+        }
+      });
+      els.statMonth.textContent = key;
+      els.statMembers.textContent = String(state.data.members.filter(member => !member.archived).length);
+      els.statAttendance.textContent = String(attendanceCount);
+      els.statAbnormal.textContent = String(abnormalCount);
+    }
+    function renderRemark() {
+      const key = getMonthKey(state.year, state.month);
+      els.monthRemark.value = state.data.remarks[key] || "";
+    }
+    function saveRemark() {
+      const key = getMonthKey(state.year, state.month);
+      state.data.remarks[key] = els.monthRemark.value.trim();
+      saveData();
+      alert("备注已保存");
+    }
+    function changeMonth(delta) {
+      let year = state.year;
+      let month = state.month + delta;
+      if (month < 1) {
+        month = 12;
+        year--;
+      } else if (month > 12) {
+        month = 1;
+        year++;
+      }
+      state.year = year;
+      state.month = month;
+      els.yearSelect.value = String(year);
+      els.monthSelect.value = String(month);
+      ensureMonthAttendance();
+      saveData();
+      renderAll();
+    }
+    function clearCurrentMonth() {
+      const key = getMonthKey(state.year, state.month);
+      const ok = confirm("确认清空 " + key + " 的全部考勤记录和备注？");
+      if (!ok) return;
+      delete state.data.attendance[key];
+      delete state.data.remarks[key];
+      saveData();
+      renderAll();
+    }
+    function markAllPresent() {
+      const activeMembers = state.data.members.filter(member => !member.archived);
+      if (activeMembers.length === 0) {
+        alert("当前没有在职人员");
+        return;
+      }
+      const key = getMonthKey(state.year, state.month);
+      const ok = confirm("确认将 " + key + " 所有在职人员的每天考勤设为出勤？已有考勤状态将被覆盖。");
+      if (!ok) return;
+      const monthData = ensureMonthAttendance();
+      const totalDays = daysInMonth(state.year, state.month);
+      activeMembers.forEach(member => {
+        if (!monthData[member.id]) {
+          monthData[member.id] = {};
+        }
+        for (let day = 1; day <= totalDays; day++) {
+          monthData[member.id][day] = "出勤";
+        }
+      });
+      saveData();
+      renderAll();
+    }
+    function exportData() {
+      const totalDays = daysInMonth(state.year, state.month);
+      const rows = [];
+      const header = ["工号", "人员", "部门", "职位", "银行名", "账号", "薪资", "入职日期"];
+      for (let day = 1; day <= totalDays; day++) {
+        header.push(day + "日");
+      }
+      header.push("出勤", "异常", "奖惩", "当月薪资");
+      rows.push(header);
+      let totalMonthlySalary = 0;
+      state.data.members.forEach(member => {
+        const summary = countMemberSummary(member.id);
+        totalMonthlySalary += Number(summary.monthlySalary) || 0;
+        const row = [
+          member.employeeNo || "",
+          member.name,
+          member.dept || "",
+          member.position || "",
+          member.bankName || "",
+          member.bankAccount || "",
+          member.salary || "",
+          member.joinDate || ""
+        ];
+        for (let day = 1; day <= totalDays; day++) {
+          row.push(getAttendance(member.id, day) || "");
+        }
+        row.push(summary.present, summary.abnormal, getRewardPenalty(member.id), summary.monthlySalary.toFixed(2));
+        rows.push(row);
+      });
+      const tableRows = rows.map(row => {
+        return "<tr>" + row.map(cell => "<td>" + escapeHtml(cell) + "</td>").join("") + "</tr>";
+      }).join("");
+      const totalRow = "<tr>" +
+        "<td colspan=\"" + (header.length - 1) + "\" style=\"text-align:right;\">合计</td>" +
+        "<td>" + escapeHtml(totalMonthlySalary.toFixed(2)) + "</td>" +
+        "</tr>";
+      const key = getMonthKey(state.year, state.month);
+      const remark = state.data.remarks[key] || "";
+      const excelHtml = "<html><head><meta charset=\"UTF-8\"><\\/head><body>" +
+        "<h2>" + escapeHtml(state.year + "年" + state.month + "月考勤薪资表") + "<\\/h2>" +
+        "<table border=\"1\"><tbody>" + tableRows + totalRow + "<\\/tbody><\\/table>" +
+        "<div style=\"margin-top: 8px; font-size: 14px;\">当月备注：" + escapeHtml(remark) + "</div>" +
+        "</body></html>";
+      const blob = new Blob(["\ufeff", excelHtml], { type: "application/vnd.ms-excel;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "attendance-" + key + ".xls";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    function importData(file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const content = String(reader.result || "");
+          let parsed;
+          if (file.name.toLowerCase().endsWith(".json")) {
+            parsed = JSON.parse(content);
+          } else {
+            parsed = parseExcelData(content);
+          }
+          if (!parsed || typeof parsed !== "object") {
+            throw new Error("无效数据");
+          }
+          state.data.members = Array.isArray(parsed.members) ? parsed.members : [];
+          state.data.attendance = parsed.attendance && typeof parsed.attendance === "object" ? parsed.attendance : {};
+          state.data.remarks = parsed.remarks && typeof parsed.remarks === "object" ? parsed.remarks : {};
+          if (parsed.year && parsed.month) {
+            state.year = parsed.year;
+            state.month = parsed.month;
+            els.yearSelect.value = String(state.year);
+            els.monthSelect.value = String(state.month);
+          }
+          saveData();
+          renderAll();
+          alert("导入成功");
+        } catch (err) {
+          alert("导入失败，文件格式不正确");
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+    function parseExcelData(content) {
+      const document = new DOMParser().parseFromString(content, "text/html");
+      const table = document.querySelector("table");
+      const firstRow = table && table.querySelector("tr");
+      if (!table || !firstRow) {
+        throw new Error("无效 Excel 文件");
+      }
+      const headers = Array.from(firstRow.cells).map(cell => cell.textContent.trim());
+      const dayColumns = headers.reduce((result, header, index) => {
+        const match = header.match(/^(\d+)日$/);
+        if (match) result.push({ index, day: Number(match[1]) });
+        return result;
+      }, []);
+      if (headers[0] !== "人员" || dayColumns.length === 0) {
+        throw new Error("无效 Excel 文件");
+      }
+      const title = document.querySelector("h2") ? document.querySelector("h2").textContent : "";
+      const dateMatch = title.match(/(\d{4})年(\d{1,2})月/);
+      const year = dateMatch ? Number(dateMatch[1]) : state.year;
+      const month = dateMatch ? Number(dateMatch[2]) : state.month;
+      const monthKey = getMonthKey(year, month);
+      const members = [];
+      const monthAttendance = {};
+      Array.from(table.querySelectorAll("tr")).slice(1).forEach((row, rowIndex) => {
+        const cells = Array.from(row.cells).map(cell => cell.textContent.trim());
+        if (!cells[0]) return;
+        const deptIndex = headers.indexOf("部门");
+        const positionIndex = headers.indexOf("职位");
+        const bankNameIndex = headers.indexOf("银行名");
+        const bankAccountIndex = headers.indexOf("账号");
+        const salaryIndex = headers.indexOf("薪资");
+        const joinDateIndex = headers.indexOf("入职日期");
+        const employeeNoIndex = headers.indexOf("工号");
+        const rewardPenaltyIndex = headers.indexOf("奖惩");
+        const id = "m_import_" + Date.now() + "_" + rowIndex;
+        members.push({
+          id,
+          name: cells[0],
+          dept: deptIndex >= 0 ? (cells[deptIndex] || "") : "",
+          position: positionIndex >= 0 ? (cells[positionIndex] || "") : "",
+          bankName: bankNameIndex >= 0 ? (cells[bankNameIndex] || "") : "",
+          bankAccount: bankAccountIndex >= 0 ? (cells[bankAccountIndex] || "") : "",
+          salary: salaryIndex >= 0 ? (cells[salaryIndex] || "") : "",
+          joinDate: joinDateIndex >= 0 ? (cells[joinDateIndex] || "") : "",
+          employeeNo: employeeNoIndex >= 0 ? (cells[employeeNoIndex] || "") : (cells[2] || "")
+        });
+        monthAttendance[id] = {};
+        if (rewardPenaltyIndex >= 0 && cells[rewardPenaltyIndex] !== "") {
+          const rewardPenalty = Number(cells[rewardPenaltyIndex]);
+          if (Number.isFinite(rewardPenalty)) monthAttendance[id].rewardPenalty = rewardPenalty;
+        }
+        dayColumns.forEach(({ index, day }) => {
+          if (cells[index]) monthAttendance[id][day] = cells[index];
+        });
+      });
+      const remarkNode = Array.from(document.querySelectorAll("p")).find(node => node.textContent.indexOf("当月备注：") === 0);
+      const remark = remarkNode ? remarkNode.textContent.slice(5) : "";
+      return {
+        year,
+        month,
+        members,
+        attendance: { [monthKey]: monthAttendance },
+        remarks: { [monthKey]: remark }
+      };
+    }
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+    function renderAll() {
+      ensureMonthAttendance();
+      renderMemberList();
+      renderRemark();
+      renderTable();
+      renderStats();
+    }
+    function toggleMemberSection(list, button) {
+      const isExpanded = button.getAttribute("aria-expanded") === "true";
+      list.hidden = isExpanded;
+      button.setAttribute("aria-expanded", String(!isExpanded));
+      button.setAttribute("aria-label", isExpanded ? "展开列表" : "收起列表");
+      button.textContent = isExpanded ? "⌄" : "⌃";
+    }
+    function bindEvents() {
+      els.addMemberBtn.addEventListener("click", addMember);
+      els.employeeSearch.addEventListener("input", () => {
+        renderMemberList();
+        renderTable();
+      });
+      els.toggleMemberListBtn.addEventListener("click", () => {
+        toggleMemberSection(els.memberList, els.toggleMemberListBtn);
+      });
+      els.toggleArchivedMemberListBtn.addEventListener("click", () => {
+        toggleMemberSection(els.archivedMemberList, els.toggleArchivedMemberListBtn);
+      });
+      els.unlockPersonnelBtn.addEventListener("click", unlockPersonnel);
+      els.personnelPassword.addEventListener("keydown", event => {
+        if (event.key === "Enter") unlockPersonnel();
+      });
+      els.yearSelect.addEventListener("change", () => {
+        state.year = Number(els.yearSelect.value);
+        ensureMonthAttendance();
+        saveData();
+        renderAll();
+      });
+      els.monthSelect.addEventListener("change", () => {
+        state.month = Number(els.monthSelect.value);
+        ensureMonthAttendance();
+        saveData();
+        renderAll();
+      });
+      els.prevMonthBtn.addEventListener("click", () => changeMonth(-1));
+      els.nextMonthBtn.addEventListener("click", () => changeMonth(1));
+      els.markAllPresentBtn.addEventListener("click", markAllPresent);
+      els.saveRemarkBtn.addEventListener("click", saveRemark);
+      els.clearMonthBtn.addEventListener("click", clearCurrentMonth);
+      els.exportBtn.addEventListener("click", exportData);
+      els.importBtn.addEventListener("click", () => {
+        els.fileInput.click();
+      });
+      els.fileInput.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (file) {
+          importData(file);
+        }
+        e.target.value = "";
+      });
+      els.refreshLinksBtn.addEventListener("click", renderConnectionLinks);
+      els.hostInput.addEventListener("input", renderConnectionLinks);
+      els.portInput.addEventListener("input", renderConnectionLinks);
+      els.mobileLinkBtn.addEventListener("click", () => {
+        window.open(getFixedMobileUrl(), "_blank", "noopener");
+      });
+      els.copyFixedMobileBtn.addEventListener("click", copyFixedMobileUrl);
+    }
+    function bootstrap() {
+      loadData();
+      initSelectors();
+      enableMobileMode();
+      initConnectionPanel();
+      initPersonnelGate();
+      bindEvents();
+      renderAll();
+      startSync();
+    }
+    bootstrap();
+  </script>
+</body>
+</html>
